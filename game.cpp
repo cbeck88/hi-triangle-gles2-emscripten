@@ -141,14 +141,23 @@ void Draw()
    // Set the viewport
    // Use the program object
    glUseProgram(program_object_);
-   GL_ERR_CHECK;
+	   GL_ERR_CHECK;
+
+   GLuint vbuffer;
+   glGenBuffers(1, &vbuffer);
+   glBindBuffer(GL_ARRAY_BUFFER, vbuffer);
+   glBufferData(GL_ARRAY_BUFFER, 9 *sizeof(GLfloat), &vVertices[0], GL_STATIC_DRAW);
+
+
    // Load the vertex data
-   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, vVertices);
-   GL_ERR_CHECK;
+   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	   GL_ERR_CHECK;
    glEnableVertexAttribArray(0);
-   GL_ERR_CHECK;
+	   GL_ERR_CHECK;
    glDrawArrays(GL_TRIANGLES, 0, 3);
-   GL_ERR_CHECK;
+	   GL_ERR_CHECK;
+
+   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 public:
