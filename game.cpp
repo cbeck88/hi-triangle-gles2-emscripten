@@ -40,7 +40,7 @@ public:
 
 class game_impl3 : public game_impl {
 
-GLuint program_object_;
+GLuint program_object_, vbuffer_;
 
 GLuint LoadShader(GLenum type, const char *shaderSrc)
 {
@@ -125,8 +125,24 @@ bool Init()
       glDeleteProgram(programObject);
       return false;
    }
+	   GL_ERR_CHECK;
+
    // Store the program object
    program_object_ = programObject;
+
+   // Load the vertex buffer
+   GLfloat vVertices[] = {0.0f,  0.5f, 0.0f, 
+                          -0.5f, -0.5f, 0.0f,
+                          0.5f, -0.5f,  0.0f};
+
+   glGenBuffers(1, &vbuffer_);
+	   GL_ERR_CHECK;
+   glBindBuffer(GL_ARRAY_BUFFER, vbuffer_);
+	   GL_ERR_CHECK;
+   glBufferData(GL_ARRAY_BUFFER, 9 *sizeof(GLfloat), &vVertices[0], GL_STATIC_DRAW);
+	   GL_ERR_CHECK;
+   glBindBuffer(GL_ARRAY_BUFFER, 0);
+	   GL_ERR_CHECK;
    return true;
 }
 
@@ -135,19 +151,14 @@ bool Init()
 //
 void Draw()
 {
-   GLfloat vVertices[] = {0.0f,  0.5f, 0.0f, 
-                          -0.5f, -0.5f, 0.0f,
-                          0.5f, -0.5f,  0.0f};
    // Set the viewport
    // Use the program object
    glUseProgram(program_object_);
 	   GL_ERR_CHECK;
 
-   GLuint vbuffer;
-   glGenBuffers(1, &vbuffer);
-   glBindBuffer(GL_ARRAY_BUFFER, vbuffer);
-   glBufferData(GL_ARRAY_BUFFER, 9 *sizeof(GLfloat), &vVertices[0], GL_STATIC_DRAW);
-
+   // Bind the vertex buffer
+   glBindBuffer(GL_ARRAY_BUFFER, vbuffer_);
+	GL_ERR_CHECK;
 
    // Load the vertex data
    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
