@@ -1,0 +1,4 @@
+/main*
+!main.cpp
+/game*
+!game.cpp

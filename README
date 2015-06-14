@@ -1,0 +1,26 @@
+== To build for the web ==
+
+The only requirement is an updated
+version of emscripten. Download the emscripten sdk and
+build the master version. Run `source emsdk_env.sh`
+in any shell before building this project.
+
+The script "easy_build_web.sh" should work out of the
+box after this.
+
+== To build for native ==
+
+You must have mesa or OpenGL hardware drivers.
+You must support for GLES2.
+You must have SDL2.
+
+The makefile searches your system for the library "GLESv2".
+On mint this is provided to me by mesa, in this lib:
+
+sudo apt-get install libegl1-mesa-dev
+
+More info here: https://launchpad.net/ubuntu/+source/mesa/10.1.3-0ubuntu0.4
+
+SDL2 can be easily installed also
+
+sudo apt-get install libsdl2-dev
