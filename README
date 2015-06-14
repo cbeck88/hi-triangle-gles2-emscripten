@@ -1,3 +1,8 @@
+== hi-triangle-gles-emscripten ==
+
+An adaptation of a hello triangle example here: https://www.khronos.org/assets/uploads/books/openglr_es_20_programming_guide_sample.pdf
+set up to be cross-compiled for WebGL using emscripten.
+
 == To build for the web ==
 
 The only requirement is an updated
