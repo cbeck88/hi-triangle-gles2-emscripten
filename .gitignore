@@ -2,3 +2,4 @@
 !main.cpp
 /game*
 !game.cpp
+!game.hpp
