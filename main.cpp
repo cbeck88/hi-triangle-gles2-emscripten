@@ -1,5 +1,7 @@
 #include <SDL2/SDL.h>
-#include <GLES2/gl2.h>
+//#include <GLES2/gl2.h>
+#include <SDL2/SDL_opengles2.h>
+
 
 #ifdef EMSCRIPTEN
 #include <emscripten/emscripten.h>
