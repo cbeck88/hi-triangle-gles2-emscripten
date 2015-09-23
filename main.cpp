@@ -1,3 +1,4 @@
+#define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 //#include <GLES2/gl2.h>
 #include <SDL2/SDL_opengles2.h>
@@ -120,7 +121,13 @@ void loop_iteration(program* prog)
 
 int main(int argc, char* argv[])
 {
-	SDL_Init(SDL_INIT_VIDEO);
+//	SDL_Init(SDL_INIT_VIDEO);
+		SDL_SetMainReady(); // Note: Emscripten crashes if SDL_INIT_TIMER is passed here
+		if (SDL_Init(/*SDL_INIT_TIMER |*/ SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0) {
+			std::cerr << "SDL_Init failed!\n";
+			std::cerr << SDL_GetError() << std::endl;
+			throw 42;
+		}
 
 	int width = 800, height = 600;
 
