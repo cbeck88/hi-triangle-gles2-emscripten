@@ -7,8 +7,48 @@
 
 #include "game.hpp"
 
+#include <iostream>
+#include <string>
+
 // Whether we should quit. It is most convenient for this to be filescope right now.
 static bool done = false;
+
+std::string align(std::string in, int num_tabs) {
+	for (int i = (num_tabs * 8 - in.size()); i > 0; --i) {
+		in += " ";
+	}
+	return in;
+}
+
+void log_gl_value(const std::string & name, SDL_GLattr sdl_enum) {
+	int val;
+	if (SDL_GL_GetAttribute(sdl_enum, &val)) { std::cerr << "(error?) "; }
+	std::cout << name << val << std::endl;
+}
+
+void output_gl_diagnostics() {
+	auto gl_version 	= reinterpret_cast< char const * >(glGetString(GL_VERSION));
+	auto gl_renderer 	= reinterpret_cast< char const * >(glGetString(GL_RENDERER));
+	auto gl_vendor	 	= reinterpret_cast< char const * >(glGetString(GL_VENDOR));
+	auto glsl_version 	= reinterpret_cast< char const * >(glGetString(GL_SHADING_LANGUAGE_VERSION));
+	auto gl_extensions	= reinterpret_cast< char const * >(glGetString(GL_EXTENSIONS));
+
+	if (!(gl_version && gl_renderer && gl_vendor && glsl_version)) {
+		std::cerr << "Could not obtain complete GL version info... GL context might not exist?!?\n";
+	}
+
+	std::cout << align("GL version:", 3) << (gl_version ? gl_version : "(null)") << std::endl;
+	std::cout << align("GL renderer:", 3) << (gl_renderer ? gl_renderer : "(null)") << std::endl;
+	std::cout << align("GL vendor:", 3) << (gl_vendor ? gl_vendor : "(null)") << std::endl;
+	std::cout << align("GLSL version:", 3) << (glsl_version ? glsl_version : "(null)") << std::endl;
+	std::cout << align("GL extensions:", 3) << (gl_extensions ? gl_extensions : "(null)") << std::endl;
+	log_gl_value(align("Red Size:", 3), SDL_GL_RED_SIZE);
+	log_gl_value(align("Blue Size:", 3), SDL_GL_BLUE_SIZE);
+	log_gl_value(align("Green Size:", 3), SDL_GL_GREEN_SIZE);
+	log_gl_value(align("Alpha Size:", 3), SDL_GL_ALPHA_SIZE);
+	log_gl_value(align("Depth Size:", 3), SDL_GL_DEPTH_SIZE);
+	log_gl_value(align("Double Buffer:", 3), SDL_GL_DOUBLEBUFFER);
+}
 
 struct SDL_graphics {
 	int width_;
@@ -30,6 +70,8 @@ struct SDL_graphics {
 
 		int w, h;
 		SDL_GetWindowSize(window_, &w, &h);		
+
+		output_gl_diagnostics();
 	}
 };
 
