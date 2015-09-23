@@ -5,10 +5,10 @@ select_gcc =
 INCLUDES += -I.
 
 ifeq ($(CXX),g++)
-#CXXFLAGS += $(shell pkg-config --cflags gl)
-#LIBS += $(shell pkg-config --libs gl)
-CXXFLAGS += $(shell pkg-config --cflags glesv2)
-LIBS += $(shell pkg-config --libs glesv2)
+CXXFLAGS += $(shell pkg-config --cflags gl)
+LIBS += $(shell pkg-config --libs gl)
+#CXXFLAGS += $(shell pkg-config --cflags glesv2)
+#LIBS += $(shell pkg-config --libs glesv2)
 CXXFLAGS += $(shell pkg-config --cflags sdl2)
 LIBS += $(shell pkg-config --libs sdl2)
 

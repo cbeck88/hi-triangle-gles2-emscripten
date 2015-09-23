@@ -56,19 +56,29 @@ struct SDL_graphics {
 	int width_;
 	int height_;
 	SDL_Window * window_;
-	SDL_Renderer * renderer_;
+	SDL_GLContext context_;
+//	SDL_Renderer * renderer_;
 
 	SDL_graphics(int width, int height)
 		: width_(width)
 		, height_(height)
 		, window_(nullptr)
-		, renderer_(nullptr)
+		, context_(nullptr)
+//		, renderer_(nullptr)
 	{
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2); 
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0); 
 		// Probably not necessary but can't hurt
 
-		SDL_CreateWindowAndRenderer(width, height, SDL_WINDOW_OPENGL, &window_, &renderer_);
+//		SDL_CreateWindowAndRenderer(width, height, SDL_WINDOW_OPENGL, &window_, &renderer_);
+		window_ = SDL_CreateWindow("DEMO", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
+				           SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE /*| SDL_WINDOW_ALLOW_HIGHDPI*/);
+		if (window_ == nullptr) { std::cerr << "Error when creating SDL GL Window: '" << SDL_GetError() << "'\n"; }
+
+		context_ = SDL_GL_CreateContext(window_);
+		if (!context_) { std::cerr << "Error when creating SDL GL Context: '" << (SDL_GetError()) <<"'\n"; }
+
 
 		int w, h;
 		SDL_GetWindowSize(window_, &w, &h);		
